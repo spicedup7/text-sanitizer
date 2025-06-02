@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Text Sanitizer</title>
+  <title>Text Cleaner</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
     textarea { resize: none; width: 100%; padding: 8px; }
@@ -19,11 +19,11 @@
   </style>
 </head>
 <body>
-  <h3>Text Sanitizer</h3>
+  <h3>Text Cleaner</h3>
   <textarea id="inputText" rows="4" onpaste="handlePaste(event)" placeholder="Paste your text here..."></textarea>
   <h3>Output</h3>
   <div id="outputBox"></div>
-  <div id="popup">Copied</div>
+  <div id="popup">Copied to Clipboard!</div>
 
   <script>
     function handlePaste(e) {
