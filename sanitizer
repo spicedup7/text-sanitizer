@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Sanitizer</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
+    textarea { width: 100%; padding: 8px; }
+    button { margin-top: 10px; padding: 8px 12px; }
+    #outputBox { margin-top: 15px; padding: 10px; background: #f4f4f4; border: 1px solid #ccc; min-height: 40px; }
+  </style>
+</head>
+<body>
+  <h3>Text Sanitizer</h3>
+  <textarea id="inputText" rows="4" placeholder="Paste your text here..."></textarea>
+  <button onclick="processText()">Sanitize</button>
+  <div id="outputBox"></div>
+
+  <script>
+    function processText() {
+      const input = document.getElementById("inputText").value;
+      const regex = /[^a-zA-Z0-9\s#$%^&*()\-_=\+\[\]{}|;:'",<.>\/?~¢]/g;
+      let cleaned = input.replace(regex, "").trim().toUpperCase();
+
+      const outputBox = document.getElementById("outputBox");
+      if (cleaned.length > 57) {
+        outputBox.innerText = "Description too long, please make sure text is not longer than 57 characters";
+        outputBox.style.color = "red";
+      } else {
+        outputBox.innerText = cleaned;
+        outputBox.style.color = "black";
+      }
+    }
+  </script>
+</body>
+</html>
