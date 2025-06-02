@@ -1,38 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sanitizer</title>
+  <title>Text Sanitizer</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 20px auto; }
-    textarea, #output { width: 100%; padding: 8px; }
-    #popup { display: none; position: fixed; top: 10px; right: 10px; background: green; color: #fff; padding: 5px; }
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
+    textarea { resize: none; width: 100%; padding: 8px; }
+    #outputBox { margin-top: 15px; padding: 10px; background: #fffefe; border: 2px solid #468634; min-height: 47px; width: 596px; }
+    #popup {
+      display: none;
+      background: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
   <h3>Text Sanitizer</h3>
-  <textarea rows="4" onpaste="p(event)" placeholder="Paste text..."></textarea>
+  <textarea id="inputText" rows="4" onpaste="handlePaste(event)" placeholder="Paste your text here..."></textarea>
   <h3>Output</h3>
-  <div id="output"></div>
+  <div id="outputBox"></div>
   <div id="popup">Copied</div>
 
   <script>
-    function p(e) {
+    function handlePaste(e) {
       e.preventDefault();
-      let t = (e.clipboardData || window.clipboardData).getData("text");
-      let c = t.replace(/[^a-zA-Z0-9\s#$%^&*()\-_=\+\[\]{}|;:'",<.>\/?~¢]/g, "").trim().toUpperCase();
-      let o = document.getElementById("output");
-      if (c.length > 57) {
-        o.innerText = "Too long (max 57 chars)";
-        o.style.color = "red";
+      let text = (e.clipboardData || window.clipboardData).getData("text");
+      let cleaned = text.replace(/[^a-zA-Z0-9\s#$%^&*()\-_=\+\[\]{}|;:'",<.>\/?~¢]/g, "").trim().toUpperCase();
+
+      let out = document.getElementById("outputBox");
+      if (cleaned.length > 57) {
+        out.innerText = "Description too long, please make sure text is not longer than 57 characters";
+        out.style.color = "red";
       } else {
-        o.innerText = c;
-        o.style.color = "black";
-        navigator.clipboard.writeText(c);
-        let pop = document.getElementById("popup");
-        pop.style.display = "block";
-        setTimeout(() => pop.style.display = "none", 1500);
+        out.innerText = cleaned;
+        out.style.color = "black";
+        navigator.clipboard.writeText(cleaned);
+        showPopup();
       }
-      e.target.value = t;
+
+      document.getElementById("inputText").value = text;
+    }
+
+    function showPopup() {
+      let popup = document.getElementById("popup");
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", 1500);
     }
   </script>
 </body>
