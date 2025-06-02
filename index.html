@@ -1,54 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Text Cleaner</title>
+  <title>Text Sanitizer</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 600px; margin: 20px auto; }
     textarea { resize: none; width: 100%; padding: 8px; }
     #outputBox { margin-top: 15px; padding: 10px; background: #fffefe; border: 2px solid #468634; min-height: 47px; width: 596px; }
     #popup {
       display: none;
-      background: #4CAF50;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
       color: white;
-      padding: 5px 10px;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      border-radius: 4px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      z-index: 1000;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
-  <h3>Text Cleaner</h3>
+  <h3>Text Sanitizer</h3>
   <textarea id="inputText" rows="4" onpaste="handlePaste(event)" placeholder="Paste your text here..."></textarea>
   <h3>Output</h3>
   <div id="outputBox"></div>
-  <div id="popup">Copied to Clipboard!</div>
+  <div id="popup">Copied to clipboard!</div>
 
   <script>
-    function handlePaste(e) {
-      e.preventDefault();
-      let text = (e.clipboardData || window.clipboardData).getData("text");
-      let cleaned = text.replace(/[^a-zA-Z0-9\s#$%^&*()\-_=\+\[\]{}|;:'",<.>\/?~¢]/g, "").trim().toUpperCase();
+    function handlePaste(event) {
+      event.preventDefault(); // Stop default paste
+      const clipboardData = event.clipboardData || window.clipboardData;
+      const pastedData = clipboardData.getData("text");
 
-      let out = document.getElementById("outputBox");
+      const regex = /[^a-zA-Z0-9\s#$%^&*()\-_=\+\[\]{}|;:'",<.>\/?~¢]/g;
+      let cleaned = pastedData.replace(regex, "").trim().toUpperCase();
+
+      const outputBox = document.getElementById("outputBox");
       if (cleaned.length > 57) {
-        out.innerText = "Description too long, please make sure text is not longer than 57 characters";
-        out.style.color = "red";
+        outputBox.innerText = "Description too long, please make sure text is not longer than 57 characters";
+        outputBox.style.color = "red";
       } else {
-        out.innerText = cleaned;
-        out.style.color = "black";
-        navigator.clipboard.writeText(cleaned);
-        showPopup();
+        outputBox.innerText = cleaned;
+        outputBox.style.color = "black";
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(cleaned).then(() => {
+          showPopup();
+        });
       }
 
-      document.getElementById("inputText").value = text;
+      document.getElementById("inputText").value = pastedData;
     }
 
     function showPopup() {
-      let popup = document.getElementById("popup");
+      const popup = document.getElementById("popup");
       popup.style.display = "block";
-      setTimeout(() => popup.style.display = "none", 1500);
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 2000);
     }
   </script>
 </body>
