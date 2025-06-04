@@ -30,8 +30,12 @@
     function handlePaste(e) {
       e.preventDefault();
       let text = (e.clipboardData || window.clipboardData).getData("text");
+
+      
       let cleaned = text.replace(/[^a-zA-Z0-9\s#$%^&*()\-_=\+\[\]{}|;:'",<.>\/?~¢]/g, "").trim().toUpperCase();
 
+
+      
       let out = document.getElementById("outputBox");
       if (cleaned.length > 57) {
         out.innerText = "Description too long, please make sure text is not longer than 57 characters";
