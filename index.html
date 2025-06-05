@@ -30,7 +30,7 @@
     function handlePaste(e) {
       e.preventDefault();
       let text = (e.clipboardData || window.clipboardData).getData("text");
-      let cleaned = text.replace(/[^a-zA-Z0-9\s#$%^&*()\-_=\+\[\]{}|;:'“,<.>\/?~¢]/g, "").trim().toUpperCase();
+      let cleaned = text.replace(/[^a-zA-Z0-9\s@#$%^&*()\-_=\+\[\]{}|;:'“,<.>\/?~¢]/g, "").trim().toUpperCase();
 
       let out = document.getElementById("outputBox");
       if (cleaned.length > 57) {
